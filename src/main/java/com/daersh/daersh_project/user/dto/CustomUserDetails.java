@@ -1,6 +1,6 @@
 package com.daersh.daersh_project.user.dto;
 
-import com.daersh.daersh_project.user.User;
+import com.daersh.daersh_project.user.aggregate.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

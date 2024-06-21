@@ -18,16 +18,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     // authenticationManager:검증 담당
     private final AuthenticationManager authenticationManager;
 
-    public LoginFilter(AuthenticationManager authenticationManager) {
+    private final JWTUtil jwtUtil;
+
+    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+
         this.authenticationManager = authenticationManager;
+
+        this.jwtUtil = jwtUtil;
     }
 
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res)
-            throws AuthenticationException
-    {
+            throws AuthenticationException {
+
         // id , pwd 추출
         String userId = obtainUsername(req);
         String userPwd = obtainPassword(req);
@@ -44,16 +49,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
 
+    // login 성공
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-//        super.successfulAuthentication(req, res, chain, authResult);
+
         System.out.println("login success");
 
     }
 
+
+    // login 실패
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest req, HttpServletResponse res, AuthenticationException failed) throws IOException, ServletException {
-//        super.unsuccessfulAuthentication(req, res, failed);
+
         System.out.println("login failed");
+
     }
+
 }

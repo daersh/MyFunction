@@ -1,4 +1,4 @@
-package com.daersh.daersh_project.user;
+package com.daersh.daersh_project.user.aggregate;
 
 
 import jakarta.persistence.*;
