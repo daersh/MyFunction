@@ -4,6 +4,7 @@ import com.daersh.daersh_project.user.UserRepo;
 import com.daersh.daersh_project.user.aggregate.RequestUser;
 import com.daersh.daersh_project.user.aggregate.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> getUsers() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.err.println("In User Service test.\n userId = " + userId);
+
         return userRepo.findAll();
     }
 

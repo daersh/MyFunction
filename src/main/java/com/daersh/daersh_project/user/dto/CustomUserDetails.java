@@ -31,6 +31,8 @@ public class CustomUserDetails implements UserDetails {
         return collection;
     }
 
+    public int getUserCode(){return user.getUserCode();}
+
     @Override
     public String getPassword() {
         return user.getUserPwd();
@@ -40,6 +42,8 @@ public class CustomUserDetails implements UserDetails {
     public String getUsername() {
         return user.getUserId();
     }
+
+
 
     @Override
     public boolean isAccountNonExpired() {

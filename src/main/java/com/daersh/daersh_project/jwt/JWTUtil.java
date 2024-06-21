@@ -69,8 +69,9 @@ public class JWTUtil {
     }
 
     // 로그인 성공 후 유저 정보를 토큰으로 만들어 반환하는 메서드
-    public String createJwt(String userId, String role, Long expiredMs){
+    public String createJwt(int userCode,String userId, String role, Long expiredMs){
         return Jwts.builder()
+                .claim("userCode",userCode)
                 .claim("userId",userId)
                 .claim("role",role)
                 .issuedAt(new Date(System.currentTimeMillis()))
