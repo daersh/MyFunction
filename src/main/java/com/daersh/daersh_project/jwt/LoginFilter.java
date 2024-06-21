@@ -71,14 +71,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // Http 인증 방식은 RFC 7235 정의에 따라 Bearer 인증 헤더 형태를 가져야 한다.
         res.addHeader("Authorization","Bearer " + token);
+
     }
 
 
     // login 실패
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest req, HttpServletResponse res, AuthenticationException failed) throws IOException, ServletException {
-        System.out.println("login failed");
+
+        System.err.println("login failed");
         res.setStatus(400);
+
     }
 
 }

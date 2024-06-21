@@ -58,6 +58,16 @@ public class JWTUtil {
                 .getExpiration().before(new Date());
     }
 
+    public String getRole(String token) {
+        return Jwts
+                .parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role",String.class);
+    }
+
     // 로그인 성공 후 유저 정보를 토큰으로 만들어 반환하는 메서드
     public String createJwt(String userId, String role, Long expiredMs){
         return Jwts.builder()
@@ -68,4 +78,6 @@ public class JWTUtil {
                 .signWith(secretKey)
                 .compact();
     }
+
+
 }

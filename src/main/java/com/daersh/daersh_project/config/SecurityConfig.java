@@ -1,5 +1,6 @@
 package com.daersh.daersh_project.config;
 
+import com.daersh.daersh_project.jwt.JWTFilter;
 import com.daersh.daersh_project.jwt.JWTUtil;
 import com.daersh.daersh_project.jwt.LoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
+
     @Autowired
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
         this.authenticationConfiguration = authenticationConfiguration;
@@ -57,7 +59,10 @@ public class SecurityConfig {
         // filter 추가
 
         httpSecurity
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+
 
         // 세션설정
         // jwt 방식에서는 세션을 stateless로 관리하기 때문에 이를 설정해야한다.
