@@ -1,10 +1,7 @@
 package com.daersh.daersh_project.user;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -18,6 +15,7 @@ import lombok.*;
 public class User {
     @Id
     @Column(name = "user_code")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userCode;
     @Column(name = "id")
     private String userId;
@@ -25,4 +23,12 @@ public class User {
     private String userPwd;
     @Column(name = "name")
     private String name;
+    @Column(name = "role")
+    private String role;
+
+    public User(String id, String pwd, String name) {
+        this.userId = id;
+        this.userPwd = pwd;
+        this.name = name;
+    }
 }
