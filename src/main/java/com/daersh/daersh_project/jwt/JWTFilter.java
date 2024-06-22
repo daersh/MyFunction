@@ -1,5 +1,4 @@
 package com.daersh.daersh_project.jwt;
-
 import com.daersh.daersh_project.user.aggregate.User;
 import com.daersh.daersh_project.user.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
@@ -48,14 +47,15 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // 세션 생성
+        // 토큰 정보 해석
         String userId = jwtUtil.getUserId(token);
-        String userPwd = jwtUtil.getUserPwd(token);
+        Integer userCode = jwtUtil.getUserCode(token);
         String role = jwtUtil.getRole(token);
+        System.out.println("userId: "+userId +" userCode: "+userCode +" role: "+role );
 
         new User();
         User user = User.builder()
                 .userId(userId)
-                .userPwd(userPwd)
                 .role(role)
                 .build();
 
