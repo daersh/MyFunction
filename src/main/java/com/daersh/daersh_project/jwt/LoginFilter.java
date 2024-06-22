@@ -3,6 +3,7 @@ package com.daersh.daersh_project.jwt;
 import com.daersh.daersh_project.user.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,12 +63,26 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
         int userCode = customUserDetails.getUserCode();
-        System.out.println("userCode = " + userCode);
-        String token = jwtUtil.createJwt(userCode,userId,role,600*60*10L);
+
+        // 프론트로 반환할 토큰 생성
+        String access = jwtUtil.createJwt("access",userCode,userId,role,600000L);
+        String refresh = jwtUtil.createJwt("refresh",userCode,userId,role,86400000L);
 
         // Http 인증 방식은 RFC 7235 정의에 따라 Bearer 인증 헤더 형태를 가져야 한다.
-        res.addHeader("Authorization","Bearer " + token);
+        res.addHeader("Authorization","Bearer " + access);
+        // 쿠키에는 리프레스 담기
+        res.addCookie(createCookie("refresh",refresh));
 
+    }
+
+    private Cookie createCookie(String key, String value) {
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(24*60*60);
+//        cookie.setSecure(true);   https 인 경우 사용
+//        cookie.setPath("/");   쿠키 지정 범위
+        cookie.setHttpOnly(true);
+
+        return cookie;
     }
 
 

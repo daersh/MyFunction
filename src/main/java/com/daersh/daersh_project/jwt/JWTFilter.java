@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 
 // 요청에 대해서 한번만 받는 필터 extend
@@ -28,23 +29,41 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         //request에서 헤더 에 키값 빼오기
-        String authorization = request.getHeader("Authorization");
+        String accessToken = request.getHeader("access");
 
         // 토큰 존재여부 및 접두사 확인
-        if (authorization==null || !authorization.startsWith("Bearer ")){
+        if (accessToken==null || !accessToken.startsWith("Bearer ")){
             System.err.println("token not exist!");
             filterChain.doFilter(request,response);
             return;
         }
 
-        String token = authorization.split(" ")[1];
+        String token = accessToken.split(" ")[1];
 
         // 토큰 시간 검증
+        // 만료 시 다음 필터로 넘기지 않는다.
+        // 토큰 만료되었다는 것만 반환
         if (jwtUtil.isExpired(token)){
             System.err.println("expired token!");
-            filterChain.doFilter(request,response);
+
+            PrintWriter printWriter = response.getWriter();
+            printWriter.print("access token expired..");
+//            filterChain.doFilter(request,response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+
+        // access token 인지 확인
+        String category = jwtUtil.getCategory(token);
+        if(!"access".equals(category)){
+            PrintWriter printWriter = response.getWriter();
+            printWriter.print("This token is not access token");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        // 토큰 검증 완료
+
 
         // 세션 생성
         // 토큰 정보 해석
@@ -55,6 +74,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         new User();
         User user = User.builder()
+                .userCode(userCode)
                 .userId(userId)
                 .role(role)
                 .build();
