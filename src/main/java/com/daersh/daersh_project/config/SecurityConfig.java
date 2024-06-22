@@ -3,6 +3,7 @@ package com.daersh.daersh_project.config;
 import com.daersh.daersh_project.jwt.JWTFilter;
 import com.daersh.daersh_project.jwt.JWTUtil;
 import com.daersh.daersh_project.jwt.LoginFilter;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -42,6 +47,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
+
+        httpSecurity.cors((cors)->cors
+            .configurationSource(new CorsConfigurationSource() {
+                @Override
+                public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                    configuration.setAllowedMethods(Collections.singletonList("*"));
+                    configuration.setAllowCredentials(true);
+                    configuration.setAllowedHeaders(Collections.singletonList("*"));
+                    configuration.setMaxAge(3600L);
+                    configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                    return configuration;
+                }
+            })
+        );
+
         // csrf disable 설정: jwt 방식 에서는 세션을 stateless 상태로 관리하여 방어하지 않아도 되어 disable 시켜도 된다.
         // jwt 방식으로 로그인 하기 때문에 form 로그인, basic 인증 방식 disable
         httpSecurity
