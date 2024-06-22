@@ -69,7 +69,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String refresh = jwtUtil.createJwt("refresh",userCode,userId,role,86400000L);
 
         // Http 인증 방식은 RFC 7235 정의에 따라 Bearer 인증 헤더 형태를 가져야 한다.
-        res.addHeader("Authorization","Bearer " + access);
+        res.addHeader("access","Bearer " + access);
         // 쿠키에는 리프레스 담기
         res.addCookie(createCookie("refresh",refresh));
 

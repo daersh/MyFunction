@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 
 @RestController
-@ResponseBody
 public class UserController {
 
    private final UserService userService;
@@ -28,7 +27,10 @@ public class UserController {
 
     @GetMapping("/user")
     private String getUsers(){
+
+        // 현재 사용자(토큰)의 정보를 반환
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iter = authorities.iterator();

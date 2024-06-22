@@ -58,7 +58,7 @@ public class SecurityConfig {
                     configuration.setAllowCredentials(true);
                     configuration.setAllowedHeaders(Collections.singletonList("*"));
                     configuration.setMaxAge(3600L);
-                    configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                    configuration.setExposedHeaders(Collections.singletonList("access"));
                     return configuration;
                 }
             })
@@ -73,7 +73,7 @@ public class SecurityConfig {
         // 경로별 인가 설정
         httpSecurity
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login","/","/regist").permitAll()
+                        .requestMatchers("/login","/","/regist","/reissue").permitAll()
                         .requestMatchers("/user").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
