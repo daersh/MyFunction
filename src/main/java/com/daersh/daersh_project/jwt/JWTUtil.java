@@ -1,5 +1,6 @@
 package com.daersh.daersh_project.jwt;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,7 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    private SecretKey secretKey;
-
-    @Value("${spring.jwt.secret}")
-    private String settingKey;
+    private final SecretKey secretKey;
 
     public JWTUtil(@Value("${spring.jwt.secret}")
                     String settingKey){
@@ -25,48 +23,37 @@ public class JWTUtil {
         );
     }
 
-    // 검증 메서드 1
     public String getUserId(String token){
-        return Jwts
-                .parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
+        return getPayload(token)
                 .get("userId",String.class);
     }
 
-    // 검증 메서드 2
-    public String getUserPwd(String token){
-        return Jwts
-                .parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("userPwd",String.class);
-    }
-
-    // 검증 메서드 3
-    public boolean isExpired(String token){
-        return Jwts
-                .parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getExpiration().before(new Date());
+    public Integer getUserCode(String token){
+        return getPayload(token)
+                .get("userCode",Integer.class);
     }
 
     public String getRole(String token) {
+        return getPayload(token)
+                .get("role",String.class);
+    }
+
+    private Claims getPayload(String token) {
         return Jwts
                 .parser()
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
-                .getPayload()
-                .get("role",String.class);
+                .getPayload();
     }
+
+    // 토큰 만료 시간 확인
+    public boolean isExpired(String token){
+        return getPayload(token)
+                .getExpiration().before(new Date());
+    }
+
+
 
     // 로그인 성공 후 유저 정보를 토큰으로 만들어 반환하는 메서드
     public String createJwt(int userCode,String userId, String role, Long expiredMs){
@@ -79,6 +66,5 @@ public class JWTUtil {
                 .signWith(secretKey)
                 .compact();
     }
-
 
 }
