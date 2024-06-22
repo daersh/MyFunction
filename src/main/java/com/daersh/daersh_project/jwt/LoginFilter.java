@@ -27,7 +27,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 
         this.authenticationManager = authenticationManager;
-
         this.jwtUtil = jwtUtil;
     }
 
@@ -46,7 +45,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //토큰에 담은 검증을 위한 AuthenticationManager로 전달
         return authenticationManager.authenticate(token);
-
     }
 
 
@@ -79,7 +77,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         System.err.println("login failed");
         res.setStatus(400);
-
     }
 
 }
