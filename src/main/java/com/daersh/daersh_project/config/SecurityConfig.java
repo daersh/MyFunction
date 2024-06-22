@@ -3,6 +3,7 @@ package com.daersh.daersh_project.config;
 import com.daersh.daersh_project.jwt.JWTFilter;
 import com.daersh.daersh_project.jwt.JWTUtil;
 import com.daersh.daersh_project.jwt.LoginFilter;
+import com.daersh.daersh_project.refresh.RefreshRepo;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,11 +28,13 @@ public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
+    private final RefreshRepo refreshRepo;
 
     @Autowired
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, RefreshRepo refreshRepo) {
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
+        this.refreshRepo = refreshRepo;
     }
 
 
@@ -82,7 +85,7 @@ public class SecurityConfig {
 
         httpSecurity
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil,refreshRepo), UsernamePasswordAuthenticationFilter.class);
 
 
 

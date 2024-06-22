@@ -1,6 +1,5 @@
-package com.daersh.daersh_project;
+package com.daersh.daersh_project.reissue;
 
-import com.daersh.daersh_project.jwt.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

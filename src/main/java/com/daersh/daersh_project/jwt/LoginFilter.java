@@ -1,5 +1,7 @@
 package com.daersh.daersh_project.jwt;
 
+import com.daersh.daersh_project.refresh.Refresh;
+import com.daersh.daersh_project.refresh.RefreshRepo;
 import com.daersh.daersh_project.user.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,19 +18,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     // authenticationManager:검증 담당
     private final AuthenticationManager authenticationManager;
-
     private final JWTUtil jwtUtil;
+    private final RefreshRepo refreshRepo;
 
-    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, RefreshRepo refreshRepo) {
 
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.refreshRepo = refreshRepo;
     }
 
 
@@ -64,15 +68,32 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String role = auth.getAuthority();
         int userCode = customUserDetails.getUserCode();
 
+
+
         // 프론트로 반환할 토큰 생성
         String access = jwtUtil.createJwt("access",userCode,userId,role,600000L);
         String refresh = jwtUtil.createJwt("refresh",userCode,userId,role,86400000L);
+
+        // refresh token db에 저장
+        addRefresh(userId,refresh,86400000L);
 
         // Http 인증 방식은 RFC 7235 정의에 따라 Bearer 인증 헤더 형태를 가져야 한다.
         res.addHeader("access","Bearer " + access);
         // 쿠키에는 리프레스 담기
         res.addCookie(createCookie("refresh",refresh));
+    }
 
+    // Refresh 토큰을 DB에 저장히기 위한 메서드
+    private void addRefresh(String userId, String refreshToken , long expireMs){
+
+        Date date = new Date(System.currentTimeMillis()+expireMs);
+
+        Refresh refresh = new Refresh();
+        refresh.setUserId(userId);
+        refresh.setRefresh(refreshToken);
+        refresh.setExpiration(date.toString());
+
+        refreshRepo.save(refresh);
     }
 
     private Cookie createCookie(String key, String value) {
