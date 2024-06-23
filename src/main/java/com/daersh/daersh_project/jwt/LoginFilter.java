@@ -88,10 +88,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         Date date = new Date(System.currentTimeMillis()+expireMs);
 
-        Refresh refresh = new Refresh();
-        refresh.setUserId(userId);
-        refresh.setRefresh(refreshToken);
-        refresh.setExpiration(date.toString());
+        Refresh refresh =Refresh.builder()
+                            .userId(userId)
+                            .refresh(refreshToken)
+                            .expiration(date)
+                            .build();
+
+        System.out.println("refresh = " + refresh);
 
         refreshRepo.save(refresh);
     }

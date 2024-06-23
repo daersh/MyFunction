@@ -79,10 +79,11 @@ public class ReissueServiceImpl implements ReissueService{
 
         Date date = new Date(System.currentTimeMillis()+expireMs);
 
-        Refresh refresh = new Refresh();
-        refresh.setUserId(userId);
-        refresh.setRefresh(refreshToken);
-        refresh.setExpiration(date.toString());
+        Refresh refresh =Refresh.builder()
+                .userId(userId)
+                .refresh(refreshToken)
+                .expiration(date)
+                .build();
 
         refreshRepo.save(refresh);
     }

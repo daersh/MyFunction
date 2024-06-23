@@ -30,6 +30,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //request에서 헤더 에 키값 빼오기
         String accessToken = request.getHeader("access");
+        System.out.println("accessToken = " + accessToken);
 
         // 토큰 존재여부 및 접두사 확인
         if (accessToken==null || !accessToken.startsWith("Bearer ")){
