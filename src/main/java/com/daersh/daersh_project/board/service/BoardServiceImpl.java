@@ -1,5 +1,11 @@
-package com.daersh.daersh_project.board;
+package com.daersh.daersh_project.board.service;
 
+import com.daersh.daersh_project.board.BoardDTO;
+import com.daersh.daersh_project.board.BoardRepo;
+import com.daersh.daersh_project.board.BoardSpecification;
+import com.daersh.daersh_project.board.aggregate.Board;
+import com.daersh.daersh_project.board.aggregate.BoardFilter;
+import com.daersh.daersh_project.board.aggregate.RequestBoard;
 import com.daersh.daersh_project.user.dto.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

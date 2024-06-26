@@ -1,5 +1,7 @@
 package com.daersh.daersh_project.board;
 
+import com.daersh.daersh_project.board.aggregate.Board;
+import com.daersh.daersh_project.board.aggregate.BoardFilter;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;

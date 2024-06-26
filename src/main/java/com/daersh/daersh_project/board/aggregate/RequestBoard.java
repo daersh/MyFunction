@@ -1,4 +1,4 @@
-package com.daersh.daersh_project.board;
+package com.daersh.daersh_project.board.aggregate;
 
 
 import lombok.Getter;

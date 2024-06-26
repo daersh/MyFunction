@@ -1,6 +1,6 @@
 package com.daersh.daersh_project.board;
 
-import jakarta.persistence.Column;
+import com.daersh.daersh_project.board.aggregate.Board;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
