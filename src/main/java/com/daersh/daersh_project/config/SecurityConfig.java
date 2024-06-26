@@ -80,6 +80,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login","/","/regist","/reissue").permitAll()
                         .requestMatchers("/user").hasRole("ADMIN")
+                        .requestMatchers("/board").hasAnyRole("USER","ADMIN")
                         .anyRequest().authenticated()
                 );
 

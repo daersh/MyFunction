@@ -90,6 +90,7 @@ public class JWTFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request,response);
+        System.out.println("user access fin");
     }
 
 
