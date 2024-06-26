@@ -7,6 +7,6 @@
 
 <br>
 
-# 2. Pagination 
+# 2. Pagination + Filter
 #### 2024.06.26 ~ 2024.06.27
-
+게시물 목록을 조회할 때 pagination과 filter를 적용하여 검색,필터 기능을 포함한 목록 조회 기능 구현
