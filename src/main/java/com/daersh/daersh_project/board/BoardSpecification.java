@@ -14,17 +14,18 @@ import java.util.List;
 public class BoardSpecification {
 
     public static Specification<Board> getBoards(BoardFilter filter) {
+
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-
+            // 1. 좋아요
             if (filter.getLikes() > 0) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("likes"), filter.getLikes()));
             }
-
+            // 2. 조회수
             if (filter.getHits() > 0) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("hits"), filter.getHits()));
             }
-
+            // 검색어
             if (filter.getSearch() != null && !filter.getSearch().isEmpty()) {
                 switch (filter.getCategory()) {
                     case 0:
