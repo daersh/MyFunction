@@ -5,6 +5,12 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <h1>specification</h1>
+ * DB 쿼리 조건을 작성하기 위한 것이지만 QueryDSL 방식을 더 추천한다는 글을 보고 사용하지 않을 예정
+ * */
+
+
 public class BoardSpecification {
 
     public static Specification<Board> getBoards(BoardFilter filter) {
@@ -34,8 +40,7 @@ public class BoardSpecification {
                         predicates.add(criteriaBuilder.like(root.get("content"), "%" + filter.getSearch() + "%"));
                         break;
                     case 3:
-                        // Assuming userCode maps to a username in another table, you would need to join and filter by username
-                        // This is a placeholder for the actual join logic
+                        // 아직 연관관계 설정하지 않아 username은 추후 개선 예정
                         break;
                     default:
                         break;
