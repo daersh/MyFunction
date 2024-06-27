@@ -44,15 +44,15 @@ public class UserController {
     @PostMapping("/regist")
     public ResponseEntity<String> register(@RequestBody@Validated RequestUserRegist requestUser, Errors errors){
        if (errors.hasErrors()) {
-           String returnValue="";
+           StringBuilder returnValue= new StringBuilder();
            for (int i = 0; i < errors.getAllErrors().size(); i++) {
-                returnValue += errors.getAllErrors().get(i).getDefaultMessage()+"\n";
+                returnValue.append(errors.getAllErrors().get(i).getDefaultMessage()).append("\n");
            }
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(returnValue);
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(returnValue.toString());
        }
        boolean result = userService.regist(requestUser);
        if (!result)
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 존재하는 ID입니다.");
        return ResponseEntity.ok().build();
     }
 

@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService{
         if(userRepo.existsByUserId(requestUser.getUserId()))
             return false;
 
-        User user = new User(id,pwd,name);
+        User user = new User(id,pwd,name,role);
         userRepo.save(user);
 
         return true;
