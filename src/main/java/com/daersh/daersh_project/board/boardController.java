@@ -26,7 +26,9 @@ public class boardController {
 
     @PostMapping("")
     public ResponseEntity<Integer> postBoard(@RequestBody RequestBoard req){
+
         int result = boardService.postBoard(req);
+
         if (result==0){
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
@@ -35,8 +37,22 @@ public class boardController {
 
     @GetMapping("")
     public ResponseEntity<ResponseBoardList> getBoardList(@RequestBody BoardFilter filter){
+
         List<BoardDTO> res = boardService.getBoardList(filter);
+
         ResponseBoardList responseBoardLists = new ResponseBoardList(res);
+
         return ResponseEntity.ok(responseBoardLists);
     }
+
+    @PutMapping("")
+    public ResponseEntity<Integer> putBoard(@RequestBody RequestBoard req){
+
+        int result = boardService.putBoard(req);
+
+        if(result==0)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }

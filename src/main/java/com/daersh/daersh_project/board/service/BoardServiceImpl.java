@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,12 +33,10 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public int postBoard(RequestBoard req) {
 
-        System.out.println("req = " + req);
 
         try{
             int userCode = getUserCode();
             LocalDateTime localDateTime = LocalDateTime.now();
-            System.out.println("localDateTime = " + localDateTime);
 
             Board board = Board.builder()
                     .title(req.getTitle())
@@ -51,7 +48,9 @@ public class BoardServiceImpl implements BoardService{
                     .likes(0)
                     .userCode(userCode)
                     .build();
+
             boardRepo.save(board);
+
         }catch (Exception e){
             System.err.println("Post failed");
             return 0;
@@ -59,6 +58,7 @@ public class BoardServiceImpl implements BoardService{
         return 1;
     }
 
+    @Override
     @Transactional
     public int putBoard(RequestBoard req){
 
