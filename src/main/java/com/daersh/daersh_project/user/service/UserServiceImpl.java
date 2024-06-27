@@ -1,7 +1,7 @@
 package com.daersh.daersh_project.user.service;
 
 import com.daersh.daersh_project.user.UserRepo;
-import com.daersh.daersh_project.user.aggregate.RequestUser;
+import com.daersh.daersh_project.user.aggregate.RequestUserRegist;
 import com.daersh.daersh_project.user.aggregate.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public boolean regist(RequestUser requestUser) {
+    public boolean regist(RequestUserRegist requestUser) {
         String id = requestUser.getUserId();
         String pwd = bCryptPasswordEncoder.encode(requestUser.getUserPwd());
         String name = requestUser.getName();
