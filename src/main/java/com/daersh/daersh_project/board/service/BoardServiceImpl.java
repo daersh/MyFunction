@@ -33,12 +33,14 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public int postBoard(RequestBoard req) {
+
         System.out.println("req = " + req);
-        int userCode = getUserCode();
-        LocalDateTime localDateTime = LocalDateTime.now();
-        System.out.println("localDateTime = " + localDateTime);
 
         try{
+            int userCode = getUserCode();
+            LocalDateTime localDateTime = LocalDateTime.now();
+            System.out.println("localDateTime = " + localDateTime);
+
             Board board = Board.builder()
                     .title(req.getTitle())
                     .content(req.getContent())
@@ -61,7 +63,11 @@ public class BoardServiceImpl implements BoardService{
     public int putBoard(RequestBoard req){
 
         try {
+            int userCode = getUserCode();
             Board board = boardRepo.findById(req.getBoardCode()).orElseThrow();
+
+            if (userCode!= board.getUserCode())
+                throw new Exception();
 
             board.setTitle(req.getTitle());
             board.setContent(board.getContent());
@@ -76,7 +82,8 @@ public class BoardServiceImpl implements BoardService{
         }
     }
 
-    private static int getUserCode() {
+    private static int getUserCode() throws Exception{
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
         return user.getUserCode();
@@ -85,8 +92,6 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public List<BoardDTO> getBoardList(BoardFilter filter) {
 
-        System.out.println("page = " + filter.getPage());
-        System.out.println("filter = " + filter);
         PageRequest pageable = PageRequest.of(filter.getPage()-1, 5, Sort.by("postDate").descending());
         List<Board> boardList =  boardRepo.findAll(BoardSpecification.getBoards(filter), pageable).getContent();
 
