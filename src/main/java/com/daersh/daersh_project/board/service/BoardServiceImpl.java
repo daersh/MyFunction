@@ -8,7 +8,6 @@ import com.daersh.daersh_project.board.aggregate.BoardFilter;
 import com.daersh.daersh_project.board.aggregate.RequestBoard;
 import com.daersh.daersh_project.user.dto.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
@@ -17,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -56,6 +57,25 @@ public class BoardServiceImpl implements BoardService{
         return 1;
     }
 
+    @Transactional
+    public int putBoard(RequestBoard req){
+
+        try {
+            Board board = boardRepo.findById(req.getBoardCode()).orElseThrow();
+
+            board.setTitle(req.getTitle());
+            board.setContent(board.getContent());
+            board.setChangeDate(LocalDateTime.now());
+
+            boardRepo.save(board);
+            return 1;
+
+        }catch (Exception e){
+            System.err.println("board put err!");
+            return 0;
+        }
+    }
+
     private static int getUserCode() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
@@ -63,12 +83,15 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<Board> getBoardList(BoardFilter filter) {
+    public List<BoardDTO> getBoardList(BoardFilter filter) {
+
         System.out.println("page = " + filter.getPage());
         System.out.println("filter = " + filter);
         PageRequest pageable = PageRequest.of(filter.getPage()-1, 5, Sort.by("postDate").descending());
-        Page<BoardDTO> boardList = boardRepo.findAll(pageable).map(BoardDTO::from);
-        return boardRepo.findAll(BoardSpecification.getBoards(filter), pageable).getContent();
-//        return boardList;
+        List<Board> boardList =  boardRepo.findAll(BoardSpecification.getBoards(filter), pageable).getContent();
+
+        return boardList.stream()
+                .map(BoardDTO::new)
+                .collect(Collectors.toList());
     }
 }

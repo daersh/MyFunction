@@ -3,6 +3,7 @@ package com.daersh.daersh_project.board;
 import com.daersh.daersh_project.board.aggregate.Board;
 import com.daersh.daersh_project.board.aggregate.BoardFilter;
 import com.daersh.daersh_project.board.aggregate.RequestBoard;
+import com.daersh.daersh_project.board.aggregate.ResponseBoardList;
 import com.daersh.daersh_project.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,8 +34,9 @@ public class boardController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Board>> getBoardList(@RequestBody BoardFilter filter){
-        List<Board> res = boardService.getBoardList(filter);
-        return ResponseEntity.ok(res);
+    public ResponseEntity<ResponseBoardList> getBoardList(@RequestBody BoardFilter filter){
+        List<BoardDTO> res = boardService.getBoardList(filter);
+        ResponseBoardList responseBoardLists = new ResponseBoardList(res);
+        return ResponseEntity.ok(responseBoardLists);
     }
 }
