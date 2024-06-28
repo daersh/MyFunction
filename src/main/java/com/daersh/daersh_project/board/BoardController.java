@@ -1,9 +1,6 @@
 package com.daersh.daersh_project.board;
 
-import com.daersh.daersh_project.board.aggregate.Board;
-import com.daersh.daersh_project.board.aggregate.BoardFilter;
-import com.daersh.daersh_project.board.aggregate.RequestBoard;
-import com.daersh.daersh_project.board.aggregate.ResponseBoardList;
+import com.daersh.daersh_project.board.aggregate.*;
 import com.daersh.daersh_project.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +11,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/board")
-public class boardController {
+public class BoardController {
 
     private final BoardService boardService;
 
     @Autowired
-    public boardController(BoardService boardService) {
+    public BoardController(BoardService boardService) {
         this.boardService = boardService;
     }
 
@@ -35,8 +32,12 @@ public class boardController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    // 게시물 페이지의 정보들을 가져옵니다.
     @GetMapping("")
     public ResponseEntity<ResponseBoardList> getBoardList(@RequestBody BoardFilter filter){
+        System.out.println("filter = " + filter);
+        if (filter.getPage()<=0)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         List<BoardDTO> res = boardService.getBoardList(filter);
 
@@ -45,6 +46,18 @@ public class boardController {
         return ResponseEntity.ok(responseBoardLists);
     }
 
+    // 게시물을 상세 조회합니다.
+    @GetMapping("{boardCode}")
+    public ResponseEntity<ResponseBoard> getBoard(@PathVariable int boardCode){
+
+        BoardDTO res = boardService.getBoard(boardCode);
+        if (res==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseBoard(res));
+    }
+
+    //게시물을 수정합니다.
     @PutMapping("")
     public ResponseEntity<Integer> putBoard(@RequestBody RequestBoard req){
 

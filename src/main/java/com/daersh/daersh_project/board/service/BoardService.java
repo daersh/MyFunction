@@ -14,4 +14,6 @@ public interface BoardService {
     int putBoard(RequestBoard req);
 
     List<BoardDTO> getBoardList(BoardFilter filter);
+
+    BoardDTO getBoard(int boardCode);
 }

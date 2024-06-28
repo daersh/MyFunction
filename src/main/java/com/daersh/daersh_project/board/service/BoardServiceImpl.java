@@ -6,6 +6,7 @@ import com.daersh.daersh_project.board.BoardSpecification;
 import com.daersh.daersh_project.board.aggregate.Board;
 import com.daersh.daersh_project.board.aggregate.BoardFilter;
 import com.daersh.daersh_project.board.aggregate.RequestBoard;
+import com.daersh.daersh_project.user.aggregate.User;
 import com.daersh.daersh_project.user.dto.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +38,8 @@ public class BoardServiceImpl implements BoardService{
         try{
             int userCode = getUserCode();
             LocalDateTime localDateTime = LocalDateTime.now();
-
+            User user = new User();
+            user.setUserCode(userCode);
             Board board = Board.builder()
                     .title(req.getTitle())
                     .content(req.getContent())
@@ -46,7 +48,7 @@ public class BoardServiceImpl implements BoardService{
                     .deleteDate(null)
                     .hits(0)
                     .likes(0)
-                    .userCode(userCode)
+                    .user(user)
                     .build();
 
             boardRepo.save(board);
@@ -66,7 +68,7 @@ public class BoardServiceImpl implements BoardService{
             int userCode = getUserCode();
             Board board = boardRepo.findById(req.getBoardCode()).orElseThrow();
 
-            if (userCode!= board.getUserCode())
+            if (userCode!= board.getUser().getUserCode())
                 throw new Exception();
 
             board.setTitle(req.getTitle());
@@ -98,5 +100,15 @@ public class BoardServiceImpl implements BoardService{
         return boardList.stream()
                 .map(BoardDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public BoardDTO getBoard(int boardCode) {
+        try {
+            Board board = boardRepo.findById(boardCode).orElseThrow();
+            return new BoardDTO(board);
+        }catch (Exception e){
+            return null;
+        }
     }
 }
