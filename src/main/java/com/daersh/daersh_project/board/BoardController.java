@@ -34,13 +34,18 @@ public class BoardController {
 
     // 게시물 페이지의 정보들을 가져옵니다.
     @GetMapping("")
-    public ResponseEntity<ResponseBoardList> getBoardList(@RequestBody BoardFilter filter){
-        System.out.println("filter = " + filter);
-        if (filter.getPage()<=0)
+    public ResponseEntity<ResponseBoardList> getBoardList(
+            @RequestParam int page,
+            @RequestParam int likes,
+            @RequestParam int hits,
+            @RequestParam int category,
+            @RequestParam String search) {
+
+        BoardFilter filter = new BoardFilter(page,likes,hits,category,search);
+        if (filter.getPage() <= 0)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         List<BoardDTO> res = boardService.getBoardList(filter);
-
         ResponseBoardList responseBoardLists = new ResponseBoardList(res);
 
         return ResponseEntity.ok(responseBoardLists);
