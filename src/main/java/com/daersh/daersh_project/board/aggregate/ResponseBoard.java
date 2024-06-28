@@ -22,7 +22,7 @@ public class ResponseBoard {
     private int likes;
     private int hits;
     private int userCode;
-//    private String userName;
+    private String userName;
 
     public ResponseBoard(BoardDTO boardDTO) {
         this.boardCode = boardDTO.getBoardCode();
@@ -33,5 +33,6 @@ public class ResponseBoard {
         this.likes = boardDTO.getLikes();
         this.hits = boardDTO.getHits();
         this.userCode = boardDTO.getUserCode();
+        this.userName = boardDTO.getUserName();
     }
 }

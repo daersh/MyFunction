@@ -20,6 +20,7 @@ public class BoardDTO {
     private int likes;
     private int hits;
     private int userCode;
+    private String userName;
 
     public BoardDTO(Board board) {
         this.boardCode= board.getBoardCode();
@@ -30,7 +31,8 @@ public class BoardDTO {
         this.deleteDate= board.getDeleteDate();
         this.likes= board.getLikes();
         this.hits= board.getHits();
-        this.userCode= board.getUserCode();
+        this.userCode= board.getUser().getUserCode();
+        this.userName= board.getUser().getName();
     }
 
     public static BoardDTO from(Board board) {

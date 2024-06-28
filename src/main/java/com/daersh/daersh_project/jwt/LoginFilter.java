@@ -44,7 +44,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         // id , pwd 추출
         String userId = obtainUsername(req);
         String userPwd = obtainPassword(req);
-
+        System.out.println("userId = " + userId);
+        System.out.println("userPwd = " + userPwd);
         // 시큐리티에서 아이디, 비밀번호를 검증하기 위해서는 토큰에 담아야한다.
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userId,userPwd, null);
 

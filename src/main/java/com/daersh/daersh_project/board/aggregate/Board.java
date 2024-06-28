@@ -1,10 +1,9 @@
 package com.daersh.daersh_project.board.aggregate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.daersh.daersh_project.user.aggregate.User;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +34,7 @@ public class Board {
     private int likes;
     @Column(name = "hits")
     private int hits;
-    @Column(name = "user_code")
-    private int userCode;
-
+    @JoinColumn(name = "user_code")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 }
