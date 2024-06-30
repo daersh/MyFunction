@@ -52,7 +52,7 @@ public class BoardController {
     }
 
     // 게시물을 상세 조회합니다.
-    @GetMapping("{boardCode}")
+    @GetMapping("/{boardCode}")
     public ResponseEntity<ResponseBoard> getBoard(@PathVariable int boardCode){
 
         BoardDTO res = boardService.getBoard(boardCode);
@@ -71,6 +71,14 @@ public class BoardController {
         if(result==0)
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    // 게시물 삭제
+    @DeleteMapping("/{boardCode}")
+    public ResponseEntity<Integer> deleteBoard(){
+
+
+        return null;
     }
 
 }
