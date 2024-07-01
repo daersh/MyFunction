@@ -1,5 +1,6 @@
 package com.daersh.daersh_project.jwt;
 
+import com.daersh.daersh_project.refresh.Refresh;
 import com.daersh.daersh_project.refresh.RefreshRepo;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -88,7 +89,17 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
         //로그아웃 진행
         //Refresh 토큰 DB에서 제거
-        refreshRepo.deleteByRefresh(refresh);
+        System.out.println("refresh = " + refresh);
+
+        Refresh refreshEntity = refreshRepo.findByRefresh(refresh);
+        if (refreshEntity != null) {
+            refreshRepo.delete(refreshEntity);
+        } else {
+            throw new ServletException("Refresh token not found");
+        }
+        if(refreshRepo.existsByRefresh(refresh)){
+            throw new ServletException("err");
+        }
 
         //Refresh 토큰 Cookie 값 0
         Cookie cookie = new Cookie("refresh", null);

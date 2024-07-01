@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface RefreshRepo extends CrudRepository<Refresh,String> {
 
     boolean existsByRefresh(String refresh);
+    Refresh findByRefresh(String refres);
     @Transactional
     void deleteByRefresh(String refresh);
+    @Transactional
+    void deleteAllByRefresh(String refresh);
 }
