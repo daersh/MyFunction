@@ -1,58 +1,71 @@
 package com.daersh.daersh_project.notion;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+import java.util.Date;
 import java.util.List;
 
 @Setter
 @Getter
+@ToString
 public class NotionPageListResponse {
-
     private List<NotionPage> results;
     private String next_cursor;
     private boolean has_more;
-
-    // 생성자, getter, setter 생략
-
-
     @Setter
     @Getter
     public static class NotionPage {
         private String id;
-        private String created_time;
-        private String last_edited_time;
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private Date created_time;
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private Date last_edited_time;
         private String url;
         private Properties properties;
-
-        // 생성자, getter, setter 생략
-
     }
 
     @Setter
     @Getter
     public static class Properties {
+        @JsonProperty("Date")
+        private DateProperty date;
         @JsonProperty("Name")
         private TitleProperty name;
+    }
 
-        // 생성자, getter, setter 생략
+    @Getter
+    @Setter
+    public static class DateProperty{
+        private ProjectDate date;
+    }
 
+    @Getter
+    @Setter
+    public static class ProjectDate{
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private Date start;
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private Date end;
     }
 
     @Setter
     @Getter
     public static class TitleProperty {
         private List<TextContent> title;
-
-        // 생성자, getter, setter 생략
-
     }
 
     @Setter
     @Getter
     public static class TextContent {
+        private Text text;
+    }
+    @Setter
+    @Getter
+    public static class Text{
         private String content;
-        // 생성자, getter, setter 생략
     }
 }
