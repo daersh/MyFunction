@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: ${PROFILE}
+  application:
+    name: DAERSH_PROJECT
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url:  jdbc:mariadb://${TODO_MYSQL_HOST}:${TODO_MYSQL_PORT}/${TODO_DATA_BASE_NAME}
+    username: ${TODO_MYSQL_USER_NAME}
+    password: ${TODO_MYSQL_PASSWORD}
+  jpa:
+    show-sql: true
+    database: mysql
+    properties:
+      hibernate:
+        ddl-auto: none
+        format_sql: true
+  jwt:
+    secret: ${jwt_secret}
+  data:
+    redis:
+      host: ${redis_host}
+      port: ${redis_port}
+      password: ${redis_password}
+      ssl:
+        enabled: true
+  jackson:
+    time-zone: Asia/Seoul
+server:
+  port: 8010
+
+notion:
+  api: ${notion_api}
