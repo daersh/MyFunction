@@ -26,22 +26,24 @@ jobs:
           echo "TODO_DATA_BASE_NAME=${{ secrets.TODO_DATA_BASE_NAME }}" >> $GITHUB_ENV
           echo "TODO_MYSQL_USER_NAME=${{ secrets.TODO_MYSQL_USER_NAME }}" >> $GITHUB_ENV
           echo "TODO_MYSQL_PASSWORD=${{ secrets.TODO_MYSQL_PASSWORD }}" >> $GITHUB_ENV
-          echo "jwt_secret=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-          echo "redis_host=${{ secrets.REDIS_HOST }}" >> $GITHUB_ENV
-          echo "redis_port=${{ secrets.REDIS_PORT }}" >> $GITHUB_ENV
-          echo "redis_password=${{ secrets.REDIS_PASSWORD }}" >> $GITHUB_ENV
-          echo "notion_api=${{ secrets.NOTION_API }}" >> $GITHUB_ENV
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> $GITHUB_ENV
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> $GITHUB_ENV
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> $GITHUB_ENV
+          echo "NOTION_API=${{ secrets.NOTION_API }}" >> $GITHUB_ENV
 
-      - name: Build
-        run: ./gradlew build
+      - name: Build and Deploy
+        run: |
+          ./gradlew build
+          java -jar build/libs/DAERSH_PROJECT-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
 
-      - name: Connect to Cloudtype
+      - name: Connect deploy key
         uses: cloudtype-github-actions/connect@v1
         with:
           token: ${{ secrets.CLOUDTYPE_TOKEN }}
           ghtoken: ${{ secrets.GHP_TOKEN }}
 
-      - name: Deploy to Cloudtype
+      - name: Deploy
         uses: cloudtype-github-actions/deploy@v1
         with:
           token: ${{ secrets.CLOUDTYPE_TOKEN }}
@@ -54,32 +56,29 @@ jobs:
               ports: 8080
               env:
                 - name: PROFILE
-                  value: $PROFILE
+                  value: prod
                 - name: TODO_MYSQL_HOST
-                  value: $TODO_MYSQL_HOST
+                  value: ${{ secrets.TODO_MYSQL_HOST }}
                 - name: TODO_MYSQL_PORT
-                  value: $TODO_MYSQL_PORT
+                  value: ${{ secrets.TODO_MYSQL_PORT }}
                 - name: TODO_DATA_BASE_NAME
-                  value: $TODO_DATA_BASE_NAME
+                  value: ${{ secrets.TODO_DATA_BASE_NAME }}
                 - name: TODO_MYSQL_USER_NAME
-                  value: $TODO_MYSQL_USER_NAME
+                  value: ${{ secrets.TODO_MYSQL_USER_NAME }}
                 - name: TODO_MYSQL_PASSWORD
-                  value: $TODO_MYSQL_PASSWORD
-                - name: jwt_secret
-                  value: $jwt_secret
-                - name: redis_host
-                  value: $redis_host
-                - name: redis_port
-                  value: $redis_port
-                - name: redis_password
-                  value: $redis_password
-                - name: notion_api
-                  value: $notion_api
+                  value: ${{ secrets.TODO_MYSQL_PASSWORD }}
+                - name: JWT_SECRET
+                  value: ${{ secrets.JWT_SECRET }}
+                - name: REDIS_HOST
+                  value: ${{ secrets.REDIS_HOST }}
+                - name: REDIS_PORT
+                  value: ${{ secrets.REDIS_PORT }}
+                - name: REDIS_PASSWORD
+                  value: ${{ secrets.REDIS_PASSWORD }}
+                - name: NOTION_API
+                  value: ${{ secrets.NOTION_API }}
               buildenv: []
             context:
               git:
                 url: git@github.com:${{ github.repository }}.git
                 ref: ${{ github.ref }}
-
-      - name: Run Application
-        run: ./gradlew bootRun
