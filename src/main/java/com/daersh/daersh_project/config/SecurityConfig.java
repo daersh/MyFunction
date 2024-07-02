@@ -66,7 +66,7 @@ public class SecurityConfig {
                         return configuration;
                     }
                 })
-        );  
+        );    
 
         // csrf disable 설정: jwt 방식 에서는 세션을 stateless 상태로 관리하여 방어하지 않아도 되어 disable 시켜도 된다.
         // jwt 방식으로 로그인 하기 때문에 form 로그인, basic 인증 방식 disable
