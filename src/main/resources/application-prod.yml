@@ -1,11 +1,11 @@
 spring:
   profiles:
-    active: ${PROFILE}
+    active: prod
   application:
     name: DAERSH_PROJECT
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url:  jdbc:mariadb://${TODO_MYSQL_HOST}:${TODO_MYSQL_PORT}/${TODO_DATA_BASE_NAME}
+    url: jdbc:mariadb://${TODO_MYSQL_HOST}:${TODO_MYSQL_PORT}/${TODO_DATA_BASE_NAME}
     username: ${TODO_MYSQL_USER_NAME}
     password: ${TODO_MYSQL_PASSWORD}
   jpa:
