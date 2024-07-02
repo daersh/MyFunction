@@ -46,7 +46,7 @@ jobs:
       - name: Deploy
         uses: cloudtype-github-actions/deploy@v1
         with:
-          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          token: ${{ secrets.CLOUDTYPE_TOKEN }} 
           project: daersh/mariadb
           stage: main
           yaml: |
