@@ -32,7 +32,54 @@ jobs:
           echo "redis_password=${{ secrets.REDIS_PASSWORD }}" >> $GITHUB_ENV
           echo "notion_api=${{ secrets.NOTION_API }}" >> $GITHUB_ENV
 
-      - name: Build and Deploy
-        run: |
-          ./gradlew build
-          ./gradlew bootRun
+      - name: Build
+        run: ./gradlew build
+
+      - name: Connect to Cloudtype
+        uses: cloudtype-github-actions/connect@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          ghtoken: ${{ secrets.GHP_TOKEN }}
+
+      - name: Deploy to Cloudtype
+        uses: cloudtype-github-actions/deploy@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          project: daersh/mariadb
+          stage: main
+          yaml: |
+            name: myfunction
+            app: java@17
+            options:
+              ports: 8080
+              env:
+                - name: PROFILE
+                  value: $PROFILE
+                - name: TODO_MYSQL_HOST
+                  value: $TODO_MYSQL_HOST
+                - name: TODO_MYSQL_PORT
+                  value: $TODO_MYSQL_PORT
+                - name: TODO_DATA_BASE_NAME
+                  value: $TODO_DATA_BASE_NAME
+                - name: TODO_MYSQL_USER_NAME
+                  value: $TODO_MYSQL_USER_NAME
+                - name: TODO_MYSQL_PASSWORD
+                  value: $TODO_MYSQL_PASSWORD
+                - name: jwt_secret
+                  value: $jwt_secret
+                - name: redis_host
+                  value: $redis_host
+                - name: redis_port
+                  value: $redis_port
+                - name: redis_password
+                  value: $redis_password
+                - name: notion_api
+                  value: $notion_api
+              buildenv: []
+            context:
+              git:
+                url: git@github.com:${{ github.repository }}.git
+                ref: ${{ github.ref }}
+
+      - name: Run Application
+        run: ./gradlew bootRun
