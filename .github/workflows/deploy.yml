@@ -18,24 +18,8 @@ jobs:
         with:
           java-version: 17
 
-      - name: Set up environment variables
-        run: |
-          echo "PROFILE=prod" >> $GITHUB_ENV
-          echo "TODO_MYSQL_HOST=${{ secrets.TODO_MYSQL_HOST }}" >> $GITHUB_ENV
-          echo "TODO_MYSQL_PORT=${{ secrets.TODO_MYSQL_PORT }}" >> $GITHUB_ENV
-          echo "TODO_DATA_BASE_NAME=${{ secrets.TODO_DATA_BASE_NAME }}" >> $GITHUB_ENV
-          echo "TODO_MYSQL_USER_NAME=${{ secrets.TODO_MYSQL_USER_NAME }}" >> $GITHUB_ENV
-          echo "TODO_MYSQL_PASSWORD=${{ secrets.TODO_MYSQL_PASSWORD }}" >> $GITHUB_ENV
-          echo "jwt_secret=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-          echo "redis_host=${{ secrets.REDIS_HOST }}" >> $GITHUB_ENV
-          echo "redis_port=${{ secrets.REDIS_PORT }}" >> $GITHUB_ENV
-          echo "redis_password=${{ secrets.REDIS_PASSWORD }}" >> $GITHUB_ENV
-          echo "notion_api=${{ secrets.NOTION_API }}" >> $GITHUB_ENV
-
-      - name: Build and Deploy
-        run: |
-          ./gradlew build
-          java -jar build/libs/DAERSH_PROJECT-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
+      - name: Build
+        run: ./gradlew build
 
       - name: Connect deploy key
         uses: cloudtype-github-actions/connect@v1
@@ -46,16 +30,16 @@ jobs:
       - name: Deploy
         uses: cloudtype-github-actions/deploy@v1
         with:
-          token: ${{ secrets.CLOUDTYPE_TOKEN }} 
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
           project: daersh/mariadb
           stage: main
           yaml: |
             name: myfunction
             app: java@17
             options:
-              ports: 8080
+              ports: 8010
               env:
-                - name: PROFILE
+                - name: SPRING_PROFILES_ACTIVE
                   value: prod
                 - name: TODO_MYSQL_HOST
                   value: ${{ secrets.TODO_MYSQL_HOST }}
