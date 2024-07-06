@@ -103,8 +103,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(24*60*60);
-//        cookie.setSecure(true);   https 인 경우 사용
-//        cookie.setPath("/");   쿠키 지정 범위
+        cookie.setSecure(true);   //https 인 경우 사용
+        cookie.setPath("/");   //쿠키 지정 범위
         cookie.setHttpOnly(true);
 
         return cookie;
