@@ -17,3 +17,8 @@
 # 3. Notion API 
 #### 2024.06.30 ~ 2024.06. 
 화면에 노션 API를 통하여 노션 DataBase 사용, 응답 데이터를 객체에 담는 기능 구현
+
+# 4. github action + CloudType
+#### 2024.07.02 ~ 2024.07.03
+Spring Boot, MariaDB를 Github action + CloudType을 통해 통합, 배포.
+Vue 화면은 netlify를 통하여 배포
