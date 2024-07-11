@@ -61,6 +61,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
             }
         }catch (Exception e){
             System.out.println("refresh error = " + refresh);
+            logout(response);
         }
 
         //refresh null check
@@ -108,6 +109,10 @@ public class CustomLogoutFilter extends GenericFilterBean {
             throw new ServletException("err");
         }
 
+        logout(response);
+    }
+
+    private static void logout(HttpServletResponse response) {
         //Refresh 토큰 Cookie 값 0
         Cookie cookie = new Cookie("refresh", null);
         cookie.setMaxAge(0);
