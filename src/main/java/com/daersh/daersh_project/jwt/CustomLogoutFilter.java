@@ -62,6 +62,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
         }catch (Exception e){
             System.out.println("refresh error = " + refresh);
             logout(response);
+            return;
         }
 
         //refresh null check
