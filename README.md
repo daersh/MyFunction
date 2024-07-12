@@ -22,3 +22,6 @@
 #### 2024.07.02 ~ 2024.07.03
 Spring Boot, MariaDB를 Github action + CloudType을 통해 통합, 배포.
 Vue 화면은 netlify를 통하여 배포
+
+# 5. 채팅 기능 (MongoDB + WebSocket)
+#### 2024.07.12 ~ 2024.07.
