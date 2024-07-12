@@ -61,6 +61,8 @@ jobs:
                   value: ${{ secrets.REDIS_PASSWORD }}
                 - name: notion_api
                   value: ${{ secrets.NOTION_API }}
+                - name: mongo_host
+                  value: ${{ secrets.MONGO_HOST }}
               buildenv: []
             context:
               git:

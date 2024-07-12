@@ -22,6 +22,8 @@ spring:
       password: ${redis_password}
       ssl:
         enabled: true
+    mongodb:
+      uri: ${mongo_host}
   jackson:
     time-zone: Asia/Seoul
 server:
