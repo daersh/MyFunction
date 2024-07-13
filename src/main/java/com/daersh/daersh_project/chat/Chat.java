@@ -8,7 +8,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @Document(collection = "chatMessages")
 public class Chat {
-    private String sender;
     private String content;
-    private String timestamp;
+    private String sender;
+    private MessageType type;
+
+    public enum MessageType {
+        CHAT, JOIN, LEAVE
+    }
+
+    // Getters and setters
 }
