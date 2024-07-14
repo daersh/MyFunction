@@ -78,12 +78,9 @@ public class SecurityConfig {
 
         // 경로별 인가 설정
         httpSecurity
-                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/login","/","/regist","/reissue").permitAll()
-//                        .requestMatchers("/user").hasRole("ADMIN")
-//                        .requestMatchers("/board").hasAnyRole("USER","ADMIN")
-//                        .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/ws/**").permitAll()
+                        .anyRequest().permitAll()
                 );
 
         // filter 추가
@@ -100,4 +97,5 @@ public class SecurityConfig {
 
         return httpSecurity.build();
     }
+
 }
