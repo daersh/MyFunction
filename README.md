@@ -24,5 +24,6 @@ Spring Boot, MariaDB를 Github action + CloudType을 통해 통합, 배포.
 Vue 화면은 netlify를 통하여 배포
 
 # 5. 채팅 기능 (MongoDB + WebSocket)
-#### 2024.07.12 ~ 2024.07.
-웹소켓 숙지하여 채팅 기능을 구현
+#### 2024.07.12 ~ 2024.07.14
+spring websocket을 활용하여 실시간 채팅 기능 구현
+채팅 내역은 mongodb atlas를 통해 저장, 불러오기 방식으로 구현 
