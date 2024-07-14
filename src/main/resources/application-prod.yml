@@ -24,6 +24,8 @@ spring:
         enabled: true
     mongodb:
       uri: ${mongo_host}
+      ssl:
+        enabled: true
   jackson:
     time-zone: Asia/Seoul
 server:
