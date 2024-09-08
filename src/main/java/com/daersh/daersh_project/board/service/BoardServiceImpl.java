@@ -36,7 +36,7 @@ public class BoardServiceImpl implements BoardService{
 
 
         try{
-            int userCode = getUserCode();
+            int userCode = 2;
             LocalDateTime localDateTime = LocalDateTime.now();
             User user = new User();
             user.setUserCode(userCode);
